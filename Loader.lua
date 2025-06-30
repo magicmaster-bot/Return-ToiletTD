@@ -2,13 +2,12 @@ local Rep = game:GetService("ReplicatedStorage")
 local plr = game.Players.LocalPlayer
 local skipDelay = 2
 local running = false
-
 local gui = Instance.new("ScreenGui", plr:WaitForChild("PlayerGui"))
 gui.Name = "SkipGui"
 gui.ResetOnSpawn = false
 
 local frame = Instance.new("Frame", gui)
-frame.Size = UDim2.new(0, 180, 0, 140)
+frame.Size = UDim2.new(0, 180, 0, 170)
 frame.Position = UDim2.new(0, 10, 0.6, 0)
 frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 frame.BorderSizePixel = 0
@@ -31,9 +30,18 @@ subtitle.TextColor3 = Color3.fromRGB(200, 200, 200)
 subtitle.TextScaled = true
 subtitle.Font = Enum.Font.SourceSansBold
 
+local fixBtn = Instance.new("TextButton", frame)
+fixBtn.Size = UDim2.new(1, -20, 0, 30)
+fixBtn.Position = UDim2.new(0, 10, 0, 48)
+fixBtn.Text = "Fix Lag"
+fixBtn.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+fixBtn.TextColor3 = Color3.new(1, 1, 1)
+fixBtn.TextScaled = true
+fixBtn.BorderSizePixel = 0
+
 local toggleSkip = Instance.new("TextButton", frame)
 toggleSkip.Size = UDim2.new(1, -20, 0, 40)
-toggleSkip.Position = UDim2.new(0, 10, 0, 55)
+toggleSkip.Position = UDim2.new(0, 10, 0, 85)
 toggleSkip.Text = "Skip: OFF"
 toggleSkip.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 toggleSkip.TextColor3 = Color3.new(1,1,1)
@@ -42,7 +50,7 @@ toggleSkip.BorderSizePixel = 0
 
 local inputTime = Instance.new("TextBox", frame)
 inputTime.Size = UDim2.new(1, -20, 0, 30)
-inputTime.Position = UDim2.new(0, 10, 0, 100)
+inputTime.Position = UDim2.new(0, 10, 0, 130)
 inputTime.PlaceholderText = "Delay (s)"
 inputTime.Text = tostring(skipDelay)
 inputTime.TextColor3 = Color3.new(1,1,1)
@@ -106,15 +114,20 @@ local function optimize(instance)
 	end
 end
 
-local function optimizeEnemies()
+fixBtn.MouseButton1Click:Connect(function()
 	local enemyFolder = workspace:FindFirstChild("Enemies") or workspace:FindFirstChild("EnemyFolder") or workspace:FindFirstChild("Monsters")
 	if enemyFolder then
 		for _, enemy in pairs(enemyFolder:GetChildren()) do
 			optimize(enemy)
 		end
 	end
-end
+end)
 
 game:GetService("RunService").RenderStepped:Connect(function()
-	optimizeEnemies()
+	local enemyFolder = workspace:FindFirstChild("Enemies") or workspace:FindFirstChild("EnemyFolder") or workspace:FindFirstChild("Monsters")
+	if enemyFolder then
+		for _, enemy in pairs(enemyFolder:GetChildren()) do
+			optimize(enemy)
+		end
+	end
 end)
