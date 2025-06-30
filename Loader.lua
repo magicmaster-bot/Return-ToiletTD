@@ -1,12 +1,11 @@
 local Players = game:GetService("Players")
-local Rep = game:GetService("ReplicatedStorage")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local plr = Players.LocalPlayer
-
 local skipRunning = false
 local skipDelay = 1
 
 local gui = Instance.new("ScreenGui")
-gui.Name = "SkipOnlyGui"
+gui.Name = "FastSkipGui"
 gui.ResetOnSpawn = false
 gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 gui.Parent = plr:WaitForChild("PlayerGui")
@@ -92,7 +91,10 @@ task.spawn(function()
 	while true do
 		if skipRunning then
 			pcall(function()
-				Rep:FindFirstChild("Events")?.VoteSkip:FireServer()
+				local voteSkip = ReplicatedStorage:WaitForChild("Events"):FindFirstChild("VoteSkip")
+				if voteSkip then
+					voteSkip:FireServer()
+				end
 			end)
 		end
 		task.wait(skipDelay)
