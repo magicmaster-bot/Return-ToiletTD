@@ -12,6 +12,8 @@ frame.Position = UDim2.new(0, 10, 0.6, 0)
 frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 frame.BorderSizePixel = 0
 frame.Visible = true
+frame.Active = true
+frame.Draggable = true
 
 local title = Instance.new("TextLabel", frame)
 title.Size = UDim2.new(1, 0, 0, 30)
